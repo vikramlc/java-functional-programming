@@ -1,16 +1,31 @@
 package com.reactivespring;
 
-import ch.qos.logback.core.util.FileUtil;
 import io.reactivex.Flowable;
-import org.apache.commons.io.FilenameUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+/*
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+*/
 
 @SpringBootApplication
 public class LearnReactiveSpringApplication {
@@ -19,96 +34,65 @@ public class LearnReactiveSpringApplication {
 
 		Flowable.just("Hello World!!").subscribe(System.out::println);
 
-		Set<String> set = new HashSet<>();
-		set = null;
+		/*
+		try(Stream<Path> walk = Files.walk(Paths.get("C:\\Users\\1994\\Documents\\Personal\\Docs"))) {
+			*//*
+			// To print all file names under a folder
+			List<String> result = walk.filter(Files::isRegularFile)
+					.map(x -> x.toString())
+					.collect(Collectors.toList());
 
-//		Iterator<String> stringIterator = set.iterator();
-//		System.out.println(stringIterator);
+			result.forEach(x -> System.out.println(x.substring(x.lastIndexOf("\\") + 1)));
+			*//*
 
-		String testFileName = "test123.pdf";
+			*//*
+			// To print all the directories under a folder
+			List<String> result = walk.filter(Files::isDirectory)
+					.map(x -> x.toString())
+					.collect(Collectors.toList());
 
-		System.out.println("TestFileName: " + testFileName.substring(testFileName.lastIndexOf(".") + 1));
+			result.forEach(x -> System.out.println(x.substring(x.lastIndexOf("\\") + 1)));
+			*//*
 
-		JSONArray jsonArray = new JSONArray();
-//		jsonArray.put("Test0");
-//		jsonArray.put("Test1");
-//		jsonArray.put("Test2");
+			*//*
+			// To print all files which end with pdf extension
+			List<String> result = walk.map(x -> x.toString())
+					.filter(s -> s.endsWith("pdf"))
+					.collect(Collectors.toList());
 
-		JSONArray jsonArray1 = new JSONArray();
-//		jsonArray.put("Test10");
-//		jsonArray.put("Test11");
-//		jsonArray.put("Test12");
+			result.forEach(x -> System.out.println(x.substring(x.lastIndexOf("\\") + 1)));
+			*//*
 
-
-
-		JSONObject jsonObject1 = new JSONObject();
-		jsonObject1.put("testKey1", "testValue1");
-
-		JSONObject jsonObject2 = new JSONObject();
-		jsonObject2.put("testKey2", "testValue2");
-
-		jsonArray1.put(jsonObject1);
-		jsonArray1.put(jsonObject2);
-
-		jsonArray.put(jsonArray1);
-
-		System.out.println("JsonArrayTest: " + jsonArray.toString());
-
-		System.out.println("*****************************");
-
-		String testJson = "{\n" +
-				"\t\"EntityDetails\": {\n" +
-				"\t\t\"individual/Owner\": [{\n" +
-				"\t\t\t\"test1\": true\n" +
-				"\t\t}]\n" +
-				"\t}\n" +
-				"}";
-
-		JSONObject test1 = new JSONObject(testJson);
-		test1.getJSONObject("EntityDetails").put("individual/Owner", jsonArray1);
-
-		System.out.println("test1: " + test1);
-
-		String testString = "pan/704915219657966_PAN_card_for_Cloud_computing.pdf";
-
-		String finalString = "";
-
-		if(testString.lastIndexOf("/") >= 0) {
-			System.out.println("String has a forward slash.");
-			finalString = testString.substring(testString.lastIndexOf("/") + 1);
-		} else {
-			finalString = testString;
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("IOException thrown!!");
 		}
+		*/
 
-		System.out.println("FinalString: " + finalString);
+		/*
+		String testPath = "C:\\\\Users\\\\1994\\\\Documents\\\\Personal";
+		Path rootLocation = Paths.get("C:\\\\Users\\\\1994\\\\Documents\\\\Personal\\\\Docs");
 
 		try {
-			String testChar = (String) null;
-			System.out.println("This is fine character!!");
-		} catch (Exception e) {
-			System.out.println("test char fail!!");
+			Stream<Path> walk = Files.walk(rootLocation)
+					.filter(path -> !path.equals(rootLocation))
+					.map(path -> rootLocation.relativize(path));
+
+			List<String> pathList = walk.map(path -> path.toString())
+					.collect(Collectors.toList());
+
+			pathList.forEach(System.out::println);
+
+		} catch (IOException e) {
+
 		}
+		*/
 
-		// Testing java 8 feature
+		Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 
-		Set<StakeHolder> stakeHolders = new HashSet<>();
-		StakeHolder s1 = new StakeHolder();
-		s1.setConsumerBureauPulled(true);
-		StakeHolder s2 = new StakeHolder();
-		s2.setConsumerBureauPulled(true);
-		StakeHolder s3 = new StakeHolder();
-		s3.setConsumerBureauPulled(true);
-		stakeHolders.add(s1);
-		stakeHolders.add(s2);
-		stakeHolders.add(s3);
-
-		boolean testValue = stakeHolders.stream().allMatch(StakeHolder::isConsumerBureauPulled);
-
-		System.out.println("testValue: Java 8: " + testValue);
-
-		String testFileUtils = "pan/704915219657966_PAN_card_for_Cloud_computing.pdf";
-
-		System.out.println("testFileUtils name: " + FilenameUtils.getExtension(testFileUtils));
+		String newstring = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.S").format(new Date());
+		System.out.println("Date Format: " + newstring);
 
 		SpringApplication.run(LearnReactiveSpringApplication.class, args);
 	}
