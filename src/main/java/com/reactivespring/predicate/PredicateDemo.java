@@ -15,7 +15,13 @@ public class PredicateDemo {
         Predicate<String> isGreaterThanFour = s -> s.length() > 4;
         System.out.println(filterList(demoList, isGreaterThanFour));
 
-        List<Integer> coronaImmunityReports = Arrays.asList(81, 80, 40, 89, 79, 90);
+        List<Integer> coronaImmunityReports = Arrays.asList(91, 80, 40, 90, 79, 88);
+        coronaImmunityReports
+                .stream()
+                .filter(num -> num>80)
+                .sorted()
+                .forEach(c -> System.out.println(c));
+
         Predicate<Integer> isCoronaPositive = s -> s > 80;
         System.out.println(filterList(coronaImmunityReports, isCoronaPositive));
     }
