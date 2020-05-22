@@ -1,6 +1,8 @@
 package com.reactivespring.rxJavaBasics;
 
+import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.observables.ConnectableObservable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,5 +46,14 @@ public class RxJavaDemo {
         Observable<Long> interval = Observable.interval(1, TimeUnit.SECONDS);
         Thread.sleep(1000);
         interval.subscribe(System.out::println);
+
+        System.out.println("=====================");
+
+        ConnectableObservable<Long> publish = Observable.interval(1, TimeUnit.SECONDS).publish();
+        publish.connect();
+        publish.subscribe(System.out::println);
+        Thread.sleep(10000);
+        publish.subscribe(System.out::println);
+        Thread.sleep(10000);
     }
 }
